@@ -31,3 +31,6 @@ HEADERS  += mainwindow.h \
     mine.h
 
 FORMS    += mainwindow.ui
+
+DISTFILES += \
+    ../src/block.bmp

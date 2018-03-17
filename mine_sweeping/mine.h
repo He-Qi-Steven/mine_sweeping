@@ -19,8 +19,16 @@ public:
      * */
     bool GenerateMap(int in_raw, int in_column, int in_mineNum);
 
-private:
+    /* 函数：reGenerateMap
+     * 功能：重新生成地图，参数不变，所以不必传入。
+     * Input: NONE
+     * Output：NONE
+     * */
+    void reGenerateMap();
+
     unsigned char **map;
+
+private:
     int raw;//行数
     int column;//列数
     int mineNum;//雷数

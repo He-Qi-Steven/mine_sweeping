@@ -19,8 +19,6 @@ bool Mine::GenerateMap(int in_raw, int in_column, int in_mineNum)
         return false;
     }
 
-    InitMap();
-
     if(false == InitMap())
     {
         cout << "error: init map failed!" << endl;
@@ -30,13 +28,17 @@ bool Mine::GenerateMap(int in_raw, int in_column, int in_mineNum)
     return true;
 }
 
+void Mine::reGenerateMap()
+{
+    InitMap();
+}
+
 
 
 bool Mine::MallocMemForMap(int in_raw, int in_column, int in_mineNum)
 {
-
     //非法入参
-    if(0 == in_raw || 0 == in_column || 0 == in_mineNum || in_mineNum > in_raw * in_column)
+    if(1 > in_raw || 1 > in_column || 1 > in_mineNum || in_mineNum > in_raw * in_column)
     {
         cout << "error: para error!" << endl;
         return false;

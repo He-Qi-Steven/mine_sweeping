@@ -52,9 +52,91 @@ public:
      * Output：bool ret，返回是否成功restart
      * */
     bool Restart();
+
+    /* 函数：paintEvent
+     * 功能：绘制，Qt虚函数，重写
+     * Input: QPaintEvent *
+     * Output：NONE
+     * */
+    void paintEvent(QPaintEvent *);
+
+    /* 函数：mousePressEvent
+     * 功能：鼠标点击事件处理，Qt虚函数，重写
+     * Input: QMouseEvent *
+     * Output：NONE
+     * */
+    void mousePressEvent(QMouseEvent *event);
+
+    /* 函数：MallocMemForMap_IsPushed
+     * 功能：为上层标记地图申请内存，指针为maindow的成员
+     * Input: 行、列
+     * Output：是否成功
+     * */
+    bool MallocMemForMap_IsPushed(int in_raw, int in_column);
+
+    /* 函数：InitMap_IsPushed
+     * 功能：为上层标记地图初始化，用0、1、2代表未访问过、访问过、插旗标志
+     * Input: 行、列
+     * Output：是否成功
+     * */
+    void InitMap_IsPushed();
+
+    /* 函数：GeneratePushedMap
+     * 功能：生成上层标记地图，调用MallocMemForMap_IsPushed、InitMap_IsPushed
+     * Input: 行、列
+     * Output：是否成功
+     * */
+    bool GeneratePushedMap(int in_raw, int in_column);
+
+    /* 函数：GenerateGlobalMap
+     * 功能：生成两级地图
+     * Input: 行、列、雷数
+     * Output：是否成功
+     * */
+    bool GenerateGlobalMap(int in_raw, int in_column, int in_mineNum);
+
+    /* 函数：changePosToIndex
+     * 功能：将鼠标的点击位置转化为地图坐标
+     * Input: x/y像素坐标
+     * Output：NONE
+     * */
+    void changePosToIndex(int *px, int *py);
+
+    void recursiveFreshBlock(int raw_pos, int col_pos);
+
+    void pressLeftRightButtonPorc(int raw_pos, int col_pos);
+
+    void pressLeftButtonProc(int raw_pos, int col_pos);
+
+    void pressRightButtonProc(int raw_pos, int col_pos);
+
     Mine m;
 
+    //地图方格的起始位置偏移
+    int map_XOffset;
+    int map_YOffset;
+
+    //游戏是否结束的状态，如果已经结束，置0，未结束置1。
+    bool IsOver;
+
+private slots:
+    void on_actionExit_triggered();
+
+    void on_actionprimary_triggered();
+
+    void on_actionmedium_triggered();
+
+    void on_actionexpert_triggered();
+
+    void on_actionRestart_triggered();
+
 private:
+    //上层地图标记，0---未点击过，1---点击过，2---插上了小旗
+    int **map_flag;
+    int raw;
+    int column;
+
+
     Ui::MainWindow *ui;
 };
 
