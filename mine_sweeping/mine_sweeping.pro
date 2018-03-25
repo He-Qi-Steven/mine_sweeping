@@ -33,4 +33,5 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui
 
 DISTFILES += \
-    ../src/block.bmp
+    ../src/block.bmp \
+    ../src/digital_45_35.bmp

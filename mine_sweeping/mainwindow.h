@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "mine.h"
+#include <QTimer>
 
 namespace Ui {
 class MainWindow;
@@ -110,14 +111,27 @@ public:
 
     void pressRightButtonProc(int raw_pos, int col_pos);
 
+    //检查状态，标志置位处理
+    void JudgeIsOver();
+
     Mine m;
 
     //地图方格的起始位置偏移
     int map_XOffset;
     int map_YOffset;
 
-    //游戏是否结束的状态，如果已经结束，置0，未结束置1。
-    bool IsOver;
+    //时间栏的起始位置偏移
+    int time_XOffset;
+    int time_YOffset;
+
+    //初始状态均置为0
+    struct StateFlag
+    {
+        bool IsOver;//游戏是否结束的状态，如果已经结束，置1，未结束置0。
+        bool IsStart;//游戏是否开始的状态，如果已经开始，置1，未开始置0.
+        bool result;//游戏结果，胜利置1,失败置0.
+    }STATE_FLAG;
+
 
 private slots:
     void on_actionExit_triggered();
@@ -130,11 +144,20 @@ private slots:
 
     void on_actionRestart_triggered();
 
+    void on_timeChange();
+
 private:
     //上层地图标记，0---未点击过，1---点击过，2---插上了小旗
     int **map_flag;
     int raw;
     int column;
+
+    //剩余雷的个数
+    int mine_Left;
+
+    //计时器
+    QTimer *timer;
+    int time_cost;
 
 
     Ui::MainWindow *ui;

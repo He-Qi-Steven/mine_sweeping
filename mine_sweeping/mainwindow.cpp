@@ -12,16 +12,24 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //游戏处于准备开始，或者进行状态。
-    IsOver = 1;
+    //初始化各个成员变量。
+    STATE_FLAG.IsOver = 0;
+    STATE_FLAG.IsStart = 0;
+    STATE_FLAG.result = 0;
     map_flag = NULL;
-    map_XOffset = 0;
-    map_YOffset = 50;
+    map_XOffset = 5;
+    map_YOffset = 64;
+    time_XOffset = 0;
+    time_YOffset = 27;
+
+    this->time_cost = 0;
+    this->timer = new QTimer(this);
+    connect(this->timer,SIGNAL(timeout()),this,SLOT(on_timeChange()));
 
     /*start:
      * 1.默认为初级,每个方格25*25，上方留出一定区域用于显示时间、剩余雷数等信息
      * 2.初始话随机地图，和记录是否访问过的地图 */
-    setFixedSize(defaultMap[0][1] * 25 + map_XOffset * 2 , defaultMap[0][0] * 25 + map_YOffset);
+    setFixedSize(defaultMap[0][1] * 25 + map_XOffset * 2 , defaultMap[0][0] * 25 + map_YOffset + 5);
     GenerateGlobalMap(defaultMap[0][0],defaultMap[0][1],defaultMap[0][2]);
     /*end*/
 }
@@ -34,67 +42,108 @@ MainWindow::~MainWindow()
 void MainWindow::paintEvent(QPaintEvent *)
 {
     QPixmap bmpblock;
-    if(false == bmpblock.load("../src/block.bmp"))
+    QPixmap bmpdigital;
+    QPixmap bmpemoji;
+    if(false == bmpblock.load("../src/block.bmp") || false == bmpdigital.load("../src/digital_32_25.bmp") || false == bmpemoji.load("../src/emoji.bmp"))
     {
-        cout << "error:load block.bmp failed!" << endl;
+        cout << "error:load bmp failed!" << endl;
     }
     else
     {
-        cout << "info:load block.bmp success!" << endl;
+        cout << "info:load bmp success!" << endl;
     }
     QPainter painter(this);
 
-    for(unsigned int i = 0; i < this->raw; i ++)
+    /*绘制格子的处理流程***************************************************************************Start*/
+    for(int i = 0; i < this->raw; i ++)
     {
-        for(unsigned int j = 0; j < this->column; j ++)
+        for(int j = 0; j < this->column; j ++)
         {
-            //没有点击过的方格的绘制
+            //没有左击过的方格的绘制
             if(0 == map_flag[i][j])
             {
-                painter.drawPixmap(j * 25 , i * 25 + this->map_YOffset, bmpblock, 9 * 25, 0, 25, 25);
+                painter.drawPixmap(j * 25 + map_XOffset, i * 25 + this->map_YOffset, bmpblock, 9 * 25, 0, 25, 25);
             }
-            //点击的方格绘制
+            //左击过的方格绘制
             else if(1 == map_flag[i][j])
             {
-                if(m.map[i][j] >= 0 && m.map[i][j] < 9)
+                if(m.map[i][j] < 9)
                 {
-                    painter.drawPixmap(j * 25 , i * 25 + this->map_YOffset, bmpblock, m.map[i][j] * 25, 0, 25, 25);
+                    painter.drawPixmap(j * 25 + map_XOffset, i * 25 + this->map_YOffset, bmpblock, m.map[i][j] * 25, 0, 25, 25);
                 }
 
                 else if(m.map[i][j] == '*')
                 {
-                    painter.drawPixmap(j * 25 , i * 25 + this->map_YOffset, bmpblock, 11 * 25, 0, 25, 25);
-                    IsOver = 0;
+                    painter.drawPixmap(j * 25 + map_XOffset, i * 25 + this->map_YOffset, bmpblock, 11 * 25, 0, 25, 25);
                 }
             }
             //插小旗的绘制
             else if(2 == map_flag[i][j])
             {
-                painter.drawPixmap(j * 25 , i * 25 + this->map_YOffset, bmpblock, 12 * 25, 0, 25, 25);
+                painter.drawPixmap(j * 25 + map_XOffset, i * 25 + this->map_YOffset, bmpblock, 12 * 25, 0, 25, 25);
             }
             //插错旗:3
             else
             {
-                painter.drawPixmap(j * 25 , i * 25 + this->map_YOffset, bmpblock, 13 * 25, 0, 25, 25);
+                painter.drawPixmap(j * 25 + map_XOffset, i * 25 + this->map_YOffset, bmpblock, 13 * 25, 0, 25, 25);
             }
         }
     }
 
-    //如果处于游戏结束状态，所有未翻开的雷全部翻开
-    if(0 == IsOver)
+
+
+    //游戏已结束
+    if(1 == STATE_FLAG.IsOver)
     {
-        for(unsigned int i = 0; i < this->raw; i ++)
+        //游戏失败,所有未翻开的雷全部翻开
+        if(0 == STATE_FLAG.result)
         {
-            for(unsigned int j = 0; j < this->column; j ++)
+            for(int i = 0; i < this->raw; i ++)
             {
-                if(0 == map_flag[i][j] && m.map[i][j] == '*')
+                for(int j = 0; j < this->column; j ++)
                 {
-                    painter.drawPixmap(j * 25 , i * 25 + this->map_YOffset, bmpblock, 10 * 25, 0, 25, 25);
+                    if(0 == map_flag[i][j] && m.map[i][j] == '*')
+                    {
+                        painter.drawPixmap(j * 25 + map_XOffset, i * 25 + this->map_YOffset, bmpblock, 10 * 25, 0, 25, 25);
+                    }
                 }
             }
-        }
-    }
+            // 表情切换为哭
+            painter.drawPixmap((this->column * 25 + 2 * map_XOffset) / 2 - 15, this->time_YOffset, bmpemoji, 2 * 31, 0, 31, 31);
 
+        }
+        //游戏胜利，切换表情，点击锁定
+        else
+        {
+            painter.drawPixmap((this->column * 25 + 2 * map_XOffset) / 2 - 15, this->time_YOffset, bmpemoji, 1 * 31, 0, 31, 31);
+        }
+
+    }
+    else
+    {
+        painter.drawPixmap((this->column * 25 + 2 * map_XOffset) / 2 - 15, this->time_YOffset, bmpemoji, 0, 0, 31, 31);
+    }
+    /*绘制格子的处理流程***************************************************************************End*/
+
+    /*绘制剩余雷数的统计处理流程********************************************************************Start*/
+    int gtemp,stemp,btemp,mine_leftTemp;
+    mine_leftTemp = mine_Left < 1 ? 0 : mine_Left;
+    btemp = mine_leftTemp / 100;
+    stemp = mine_leftTemp / 10 - btemp * 10;
+    gtemp = mine_leftTemp - btemp * 100 - stemp * 10;
+    cout << "mineLeftNum: " << this->mine_Left << "  btemp: " << btemp << "  stemp: " << stemp << "  gtemp:" << gtemp << endl;
+    painter.drawPixmap(0 + map_XOffset, this->time_YOffset, bmpdigital, btemp * 25, 0, 25, 32);
+    painter.drawPixmap(25 + map_XOffset,this->time_YOffset, bmpdigital, stemp * 25, 0, 25, 32);
+    painter.drawPixmap(50 + map_XOffset,this->time_YOffset, bmpdigital, gtemp * 25, 0, 25, 32);
+    /*绘制剩余雷数的统计处理流程**********************************************************************End*/
+
+    /*绘制时间统计的处理流程************************************************************************Start*/
+    //如果游戏还没有开始
+    if(0 == STATE_FLAG.IsStart)
+    {
+
+    }
+    /*绘制时间统计的处理流程************************************************************************End*/
 
 
     /*
@@ -150,35 +199,55 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    //如果游戏处于结束状态，不响应点击事件
-    if(0 == IsOver)
-    {
-        return;
-    }
     int ppx = event->x();
     int ppy = event->y();
     cout << "ppx: " << ppx << "  ppy: " << ppy << endl;
     cout << "xArea: " << map_XOffset << "," << 25 * this->column + map_XOffset << endl;
     cout << "yArea: " << map_YOffset << "," << 25 * this->raw + map_YOffset << endl;
-    //如果点击位置不在方格区域内，则不进行处理
+    //如果点击位置不在方格区域内，点击表情进行处理，否则不处理
     if(!((ppx > map_XOffset && ppx < 25 * this->column + map_XOffset) && (ppy > map_YOffset && ppy < this->raw * 25 + map_YOffset)))
     {
-        cout << "error: not in the correct area!" << endl;
+        int temp_x = (this->column * 25 + 2 * map_XOffset) / 2 - 15;
+        int temp_y = this->time_YOffset;
+        if(ppx >= temp_x && ppx <= temp_x + 31 && ppy >= temp_y && ppy <= temp_y + 31)
+        {
+            on_actionRestart_triggered();
+        }
+        //cout << "error: not in the correct area!" << endl;
+        return;
+    }
+    //如果游戏处于结束状态，不响应点击事件
+    if(1 == STATE_FLAG.IsOver)
+    {
         return;
     }
     changePosToIndex(&ppx, &ppy);
     if((Qt::LeftButton|Qt::RightButton) == event->buttons())
     {
+        //如果游戏还没有开始，不响应左右双击事件
+        if(0 == STATE_FLAG.IsStart)
+        {
+            return;
+        }
         pressLeftRightButtonPorc(ppy, ppx);
     }
     else if(Qt::LeftButton == event->button())
     {
+        if(0 == STATE_FLAG.IsStart)
+        {
+            STATE_FLAG.IsStart = 1;
+            this->timer->start(1000);
+        }
         pressLeftButtonProc(ppy, ppx);
     }
     else if(Qt::RightButton == event->button())
     {
         pressRightButtonProc(ppy, ppx);
     }
+
+    //更新游戏状态
+    JudgeIsOver();
+    update();
 
 }
 
@@ -313,7 +382,7 @@ void MainWindow::pressLeftRightButtonPorc(int raw_pos, int col_pos)
                     }
                     break;
                 case 0:
-                    map_flag[i][j] = 1;
+                    pressLeftButtonProc(i, j);
                     break;
                 default:
                     break;
@@ -321,8 +390,6 @@ void MainWindow::pressLeftRightButtonPorc(int raw_pos, int col_pos)
             }
         }
     }
-    update();
-
 }
 
 void MainWindow::pressLeftButtonProc(int raw_pos, int col_pos)
@@ -337,8 +404,6 @@ void MainWindow::pressLeftButtonProc(int raw_pos, int col_pos)
     {
         recursiveFreshBlock(raw_pos, col_pos);
     }
-
-    update();
 }
 
 void MainWindow::pressRightButtonProc(int raw_pos, int col_pos)
@@ -349,18 +414,51 @@ void MainWindow::pressRightButtonProc(int raw_pos, int col_pos)
         return;
     case 2:
         map_flag[raw_pos][col_pos] = 0;
+        this->mine_Left ++;
         break;
     case 0:
         map_flag[raw_pos][col_pos] = 2;
+        this->mine_Left --;
         break;
     default:
         break;
     }
-    update();
+}
+
+void MainWindow::JudgeIsOver()
+{
+    bool tempflag = 1;
+    for(int i = 0; i < this->raw; i ++)
+    {
+        for(int j = 0; j < this->column; j ++)
+        {
+            //如果点击到雷，游戏结束，结果判负
+            if(1 == map_flag[i][j] && '*' == m.map[i][j])
+            {
+                STATE_FLAG.IsOver = 1;
+                STATE_FLAG.result = 0;
+                this->timer->stop();
+                return;
+            }
+            //如果有非雷非0的区域没有被点击，游戏没有结束，继续检查。
+            if('*' != m.map[i][j] && 0 != m.map[i][j] && 0 == map_flag[i][j])
+            {
+                tempflag = 0;
+            }
+        }
+    }
+    if(tempflag)
+    {
+        //所有非雷非0格子都被点过，游戏结束，结果判胜
+        STATE_FLAG.IsOver = 1;
+        STATE_FLAG.result = 1;
+        this->timer->stop();
+    }
 }
 
 bool MainWindow::GenerateGlobalMap(int in_raw, int in_column, int in_mineNum)
 {
+    mine_Left = in_mineNum;
     //生成一层地图
     if(false == m.GenerateMap(in_raw,in_column,in_mineNum))
     {
@@ -378,8 +476,9 @@ bool MainWindow::GenerateGlobalMap(int in_raw, int in_column, int in_mineNum)
 
 bool MainWindow::ChangeLevel(int in_raw, int in_column, int in_mineNum)
 {
-    IsOver = 1;
-    setFixedSize(in_column * 25 + map_XOffset * 2 , in_raw * 25 + map_YOffset);
+    STATE_FLAG.IsOver = 0;
+    STATE_FLAG.IsStart = 0;
+    setFixedSize(in_column * 25 + map_XOffset * 2 , in_raw * 25 + map_YOffset + 5);
     GenerateGlobalMap(in_raw, in_column, in_mineNum);
     update();
     return true;
@@ -407,9 +506,19 @@ void MainWindow::on_actionexpert_triggered()
 
 void MainWindow::on_actionRestart_triggered()
 {
-    IsOver = 1;
-    setFixedSize(column * 25 + map_XOffset * 2 , raw * 25 + map_YOffset);
+    STATE_FLAG.IsOver= 0;
+    STATE_FLAG.IsStart = 0;
+    setFixedSize(column * 25 + map_XOffset * 2 , raw * 25 + map_YOffset + 5);
+    this->mine_Left = m.getMineNumber();
+    this->time_cost = 0;
     m.reGenerateMap();
     InitMap_IsPushed();
     update();
+}
+
+void MainWindow::on_timeChange()
+{
+    this->time_cost ++;
+    cout << "@@time: " << this->time_cost << endl;
+
 }

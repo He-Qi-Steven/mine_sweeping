@@ -26,6 +26,8 @@ public:
      * */
     void reGenerateMap();
 
+    int getMineNumber();
+
     unsigned char **map;
 
 private:

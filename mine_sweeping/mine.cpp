@@ -33,6 +33,11 @@ void Mine::reGenerateMap()
     InitMap();
 }
 
+int Mine::getMineNumber()
+{
+    return this->mineNum;
+}
+
 
 
 bool Mine::MallocMemForMap(int in_raw, int in_column, int in_mineNum)
