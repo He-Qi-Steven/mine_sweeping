@@ -133,68 +133,20 @@ void MainWindow::paintEvent(QPaintEvent *)
     gtemp = mine_leftTemp - btemp * 100 - stemp * 10;
     cout << "mineLeftNum: " << this->mine_Left << "  btemp: " << btemp << "  stemp: " << stemp << "  gtemp:" << gtemp << endl;
     painter.drawPixmap(0 + map_XOffset, this->time_YOffset, bmpdigital, btemp * 25, 0, 25, 32);
-    painter.drawPixmap(25 + map_XOffset,this->time_YOffset, bmpdigital, stemp * 25, 0, 25, 32);
-    painter.drawPixmap(50 + map_XOffset,this->time_YOffset, bmpdigital, gtemp * 25, 0, 25, 32);
+    painter.drawPixmap(25 + map_XOffset, this->time_YOffset, bmpdigital, stemp * 25, 0, 25, 32);
+    painter.drawPixmap(50 + map_XOffset, this->time_YOffset, bmpdigital, gtemp * 25, 0, 25, 32);
     /*绘制剩余雷数的统计处理流程**********************************************************************End*/
 
     /*绘制时间统计的处理流程************************************************************************Start*/
-    //如果游戏还没有开始
-    if(0 == STATE_FLAG.IsStart)
-    {
-
-    }
+    int time_temp = this->time_cost;
+    btemp = time_temp / 100;
+    stemp = time_temp / 10 - btemp * 10;
+    gtemp = time_temp - btemp * 100 - stemp * 10;
+    cout << "timecost: " << this->time_cost << "  btemp: " << btemp << "  stemp: " << stemp << "  gtemp:" << gtemp << endl;
+    painter.drawPixmap(this->column * 25 + map_XOffset - 75, this->time_YOffset, bmpdigital, btemp * 25, 0, 25, 32);
+    painter.drawPixmap(this->column * 25 + map_XOffset - 50, this->time_YOffset, bmpdigital, stemp * 25, 0, 25, 32);
+    painter.drawPixmap(this->column * 25 + map_XOffset - 25, this->time_YOffset, bmpdigital, gtemp * 25, 0, 25, 32);
     /*绘制时间统计的处理流程************************************************************************End*/
-
-
-    /*
-    //实例 QPixmap
-    QPixmap bmpmap(":new/prefix1/res/item2.bmp");
-    QPixmap bmpnub(":new/prefix1/res/item1.bmp");
-    QPixmap bmpfame(":new/prefix1/res/item3.bmp");
-    QPixmap bmpface(":new/prefix1/res/item4.bmp");
-    //实例 Qainter 对象
-    QPainter painter(this);
-    //绘制类区
-    for(int i=0;i<mineMap.mx;i++)
-    {
-        for(int j=0;j<mineMap.my;j++)
-        {
-            if (mineMap.Map[i][j] >= 0 && mineMap.Map[i][j] < 9)
-            {
-                painter.drawPixmap( i * 20+offsetx, j * 20 + 40+offsety,  bmpmap, mineMap.Map[i][j] * 20, 0,20,20);
-            }
-            if (mineMap.Map[i][j]>90)
-                painter.drawPixmap(i * 20+offsetx, j * 20 + 40+offsety,bmpmap, 10 * 20, 0,20,20);
-            if (mineMap.Map[i][j] == -1)
-                painter.drawPixmap(i * 20+offsetx, j * 20 + 40+offsety,bmpmap, 9 * 20, 0,20,20);
-            if (mineMap.Map[i][j] == -2)
-                painter.drawPixmap(i * 20+offsetx, j * 20 + 40+offsety,  bmpmap, 12 * 20, 0,20,20);
-            if (mineMap.Map[i][j] > 40 && mineMap.Map[i][j] < 60)
-                painter.drawPixmap(i * 20+offsetx, j * 20 + 40+offsety,  bmpmap, 11 * 20, 0,20,20);
-        }
-    }
-    int rm=mineMap.rMine;
-    int rt=mineMap.timer;
-    //绘制框架
-    painter.drawPixmap( 0+offsetx, 0+offsety, bmpfame, 0, 0, 70, 40);
-    painter.drawPixmap(mineMap.mx * 10 - 20+offsetx, 0+offsety, bmpfame, 80, 0, 40, 40);
-    painter.drawPixmap(mineMap.mx * 20 - 70+offsetx, 0+offsety, bmpfame, 130, 0, 70, 40);
-    painter.drawPixmap(70+offsetx, 0+offsety, mineMap.mx * 10 - 90, 40, bmpfame, 70, 0, 10, 40);
-    painter.drawPixmap(mineMap.mx * 10 + 20+offsetx, 0+offsety, mineMap.mx * 10 - 90, 40, bmpfame, 70, 0, 10, 40);
-    painter.drawPixmap(mineMap.mx * 10 - 12+offsetx, 7+offsety, bmpface, mineMap.winf * 24, 0, 24, 24);
-    //绘制剩余雷数
-    if (rm < 0) rm = 0;
-    painter.drawPixmap(6+offsetx, 5+offsety, bmpnub, rm / 100 * 20, 0, 20, 28);
-    if (rm >= 100) rm %= 100;
-    painter.drawPixmap(26+offsetx, 5+offsety, bmpnub, rm / 10 * 20, 0, 20, 28);
-    painter.drawPixmap(46+offsetx, 5+offsety, bmpnub, rm % 10 * 20, 0, 20, 28);
-    //绘制扫雷时间
-    if (rt >= 1000) rt %= 1000;
-    painter.drawPixmap(mineMap.mx*20-66+offsetx, 5+offsety, bmpnub, rt / 100 * 20, 0, 20, 28);
-    if (rt >= 100) rt %= 100;
-    painter.drawPixmap(mineMap.mx*20 - 46+offsetx, 5+offsety, bmpnub, rt / 10 * 20, 0, 20, 28);
-    painter.drawPixmap(mineMap.mx*20 - 26+offsetx, 5+offsety, bmpnub, rt % 10 * 20, 0, 20, 28);
-    */
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -479,6 +431,8 @@ bool MainWindow::ChangeLevel(int in_raw, int in_column, int in_mineNum)
     STATE_FLAG.IsOver = 0;
     STATE_FLAG.IsStart = 0;
     setFixedSize(in_column * 25 + map_XOffset * 2 , in_raw * 25 + map_YOffset + 5);
+    this->time_cost = 0;
+    this->timer->stop();
     GenerateGlobalMap(in_raw, in_column, in_mineNum);
     update();
     return true;
@@ -511,6 +465,7 @@ void MainWindow::on_actionRestart_triggered()
     setFixedSize(column * 25 + map_XOffset * 2 , raw * 25 + map_YOffset + 5);
     this->mine_Left = m.getMineNumber();
     this->time_cost = 0;
+    this->timer->stop();
     m.reGenerateMap();
     InitMap_IsPushed();
     update();
@@ -520,5 +475,6 @@ void MainWindow::on_timeChange()
 {
     this->time_cost ++;
     cout << "@@time: " << this->time_cost << endl;
+    update();
 
 }
