@@ -146,6 +146,10 @@ private slots:
 
     void on_timeChange();
 
+    void on_actionVersion_triggered();
+
+    void on_actionAuthor_triggered();
+
 private:
     //上层地图标记，0---未点击过，1---点击过，2---插上了小旗
     int **map_flag;

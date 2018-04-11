@@ -43,6 +43,8 @@
     <property name="title">
      <string>About</string>
     </property>
+    <addaction name="actionVersion"/>
+    <addaction name="actionAuthor"/>
    </widget>
    <addaction name="menuOption"/>
    <addaction name="menuAbout"/>
@@ -74,6 +76,16 @@
   <action name="actionexpert">
    <property name="text">
     <string>expert</string>
+   </property>
+  </action>
+  <action name="actionVersion">
+   <property name="text">
+    <string>Version</string>
+   </property>
+  </action>
+  <action name="actionAuthor">
+   <property name="text">
+    <string>Author</string>
    </property>
   </action>
  </widget>

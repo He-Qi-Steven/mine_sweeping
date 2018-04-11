@@ -3,6 +3,7 @@
 #include <iostream>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -477,4 +478,18 @@ void MainWindow::on_timeChange()
     cout << "@@time: " << this->time_cost << endl;
     update();
 
+}
+
+void MainWindow::on_actionVersion_triggered()
+{
+    QString title = "Version";
+    QString content = "Version:1.0\n基本功能开发完成\n\t\t\t\t2018.04.11";
+    QMessageBox::information(NULL, title, content, QMessageBox::Ok);
+}
+
+void MainWindow::on_actionAuthor_triggered()
+{
+    QString title = "Author";
+    QString content = "\t这款扫雷是学习了一份扫雷开源代码后做的个人小练习，之后会在此基础上增加更多的扩展内容~欢迎各位同道中人交流联系~     ---不定期更新\n\nEmail:heqi_dlmuit@163.com\nQQ:292931255";
+    QMessageBox::information(NULL, title, content, QMessageBox::Ok);
 }
