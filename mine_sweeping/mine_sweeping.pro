@@ -25,12 +25,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    mine.cpp
+    mine.cpp \
+    dialog_userdefined.cpp
 
 HEADERS  += mainwindow.h \
-    mine.h
+    mine.h \
+    dialog_userdefined.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    dialog_userdefined.ui
 
 DISTFILES += \
     ../src/block.bmp \

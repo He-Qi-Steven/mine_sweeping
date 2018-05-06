@@ -8,6 +8,12 @@
 namespace Ui {
 class MainWindow;
 }
+typedef struct
+{
+    int raw;
+    int column;
+    int num_mine;
+}strParas;
 
 /*功能：与用户直接交互
  * 1.等级切换外部接口
@@ -149,6 +155,8 @@ private slots:
     void on_actionVersion_triggered();
 
     void on_actionAuthor_triggered();
+
+    void on_actionuser_defined_triggered();
 
 private:
     //上层地图标记，0---未点击过，1---点击过，2---插上了小旗

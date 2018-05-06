@@ -34,6 +34,7 @@
      <addaction name="actionprimary"/>
      <addaction name="actionmedium"/>
      <addaction name="actionexpert"/>
+     <addaction name="actionuser_defined"/>
     </widget>
     <addaction name="actionRestart"/>
     <addaction name="menuLevel"/>
@@ -86,6 +87,11 @@
   <action name="actionAuthor">
    <property name="text">
     <string>Author</string>
+   </property>
+  </action>
+  <action name="actionuser_defined">
+   <property name="text">
+    <string>user-defined</string>
    </property>
   </action>
  </widget>

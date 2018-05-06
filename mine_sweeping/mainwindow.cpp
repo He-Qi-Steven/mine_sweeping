@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QMessageBox>
+#include "dialog_userdefined.h"
 
 using namespace std;
 
@@ -492,4 +493,22 @@ void MainWindow::on_actionAuthor_triggered()
     QString title = "Author";
     QString content = "\t这款扫雷是学习了一份扫雷开源代码后做的个人小练习，之后会在此基础上增加更多的扩展内容~欢迎各位同道中人交流联系~     ---不定期更新\n\nEmail:heqi_dlmuit@163.com\nQQ:292931255";
     QMessageBox::information(NULL, title, content, QMessageBox::Ok);
+}
+
+//自定义参数对话框，用于接受用户输入参数
+void MainWindow::on_actionuser_defined_triggered()
+{
+    strParas *paras = (strParas *)malloc(sizeof(strParas));
+    memset(paras, 0, sizeof(strParas));
+    Dialog_userDefined diag(0, (void **)&paras);
+    diag.exec();
+    if(0 == paras->raw)
+    {
+        cout << "error: [user-defined]cannot get paras!" << endl;
+        return ;
+    }
+    else
+    {
+        ChangeLevel(paras->raw, paras->column, paras->num_mine);
+    }
 }
