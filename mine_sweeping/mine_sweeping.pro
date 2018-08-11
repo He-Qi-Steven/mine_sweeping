@@ -26,14 +26,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     mine.cpp \
-    dialog_userdefined.cpp
+    dialog_userdefined.cpp \
+    mode_choice.cpp
 
 HEADERS  += mainwindow.h \
     mine.h \
-    dialog_userdefined.h
+    dialog_userdefined.h \
+    mode_choice.h
 
 FORMS    += mainwindow.ui \
-    dialog_userdefined.ui
+    dialog_userdefined.ui \
+    mode_choice.ui
 
 DISTFILES += \
     ../src/block.bmp \

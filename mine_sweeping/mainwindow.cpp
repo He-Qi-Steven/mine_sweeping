@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include "dialog_userdefined.h"
 
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->time_cost = 0;
     this->timer = new QTimer(this);
     connect(this->timer,SIGNAL(timeout()),this,SLOT(on_timeChange()));
+    this->setAttribute(Qt::WA_DeleteOnClose);
 
     /*start:
      * 1.默认为初级,每个方格25*25，上方留出一定区域用于显示时间、剩余雷数等信息
@@ -38,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    cout << "^^^^&&&&&&&&&&***********((((((((((" << endl;
     delete ui;
 }
 
@@ -442,7 +445,7 @@ bool MainWindow::ChangeLevel(int in_raw, int in_column, int in_mineNum)
 
 void MainWindow::on_actionExit_triggered()
 {
-    exit(0);
+    this->close();
 }
 
 void MainWindow::on_actionprimary_triggered()
@@ -511,4 +514,10 @@ void MainWindow::on_actionuser_defined_triggered()
     {
         ChangeLevel(paras->raw, paras->column, paras->num_mine);
     }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    emit close_signals();
+    event->accept();
 }

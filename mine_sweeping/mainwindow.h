@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "mine.h"
 #include <QTimer>
+#include <QCloseEvent>
 
 namespace Ui {
 class MainWindow;
@@ -138,6 +139,8 @@ public:
         bool result;//游戏结果，胜利置1,失败置0.
     }STATE_FLAG;
 
+signals:
+    void close_signals();
 
 private slots:
     void on_actionExit_triggered();
@@ -171,6 +174,7 @@ private:
     QTimer *timer;
     int time_cost;
 
+    void closeEvent(QCloseEvent *event);
 
     Ui::MainWindow *ui;
 };
