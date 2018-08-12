@@ -433,12 +433,17 @@ bool MainWindow::GenerateGlobalMap(int in_raw, int in_column, int in_mineNum)
 
 bool MainWindow::ChangeLevel(int in_raw, int in_column, int in_mineNum)
 {
+    bool ret;
     STATE_FLAG.IsOver = 0;
     STATE_FLAG.IsStart = 0;
     setFixedSize(in_column * 25 + map_XOffset * 2 , in_raw * 25 + map_YOffset + 5);
     this->time_cost = 0;
     this->timer->stop();
-    GenerateGlobalMap(in_raw, in_column, in_mineNum);
+    ret = GenerateGlobalMap(in_raw, in_column, in_mineNum);
+    if(!ret)
+    {
+        return false;
+    }
     update();
     return true;
 }
@@ -503,7 +508,7 @@ void MainWindow::on_actionuser_defined_triggered()
 {
     strParas *paras = (strParas *)malloc(sizeof(strParas));
     memset(paras, 0, sizeof(strParas));
-    Dialog_userDefined diag(0, (void **)&paras);
+    Dialog_userDefined diag((void **)&paras);
     diag.exec();
     if(0 == paras->raw)
     {

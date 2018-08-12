@@ -27,16 +27,19 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     mine.cpp \
     dialog_userdefined.cpp \
-    mode_choice.cpp
+    mode_choice.cpp \
+    designwindow.cpp
 
 HEADERS  += mainwindow.h \
     mine.h \
     dialog_userdefined.h \
-    mode_choice.h
+    mode_choice.h \
+    designwindow.h
 
 FORMS    += mainwindow.ui \
     dialog_userdefined.ui \
-    mode_choice.ui
+    mode_choice.ui \
+    designwindow.ui
 
 DISTFILES += \
     ../src/block.bmp \

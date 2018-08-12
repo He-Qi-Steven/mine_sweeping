@@ -50,6 +50,27 @@ void mode_choice::on_designedButton_Return_clicked()
     this->Set_designedButton_visible(false);
 }
 
+void mode_choice::on_designedButton_New_clicked()
+{
+    strParas *paras = (strParas *)malloc(sizeof(strParas));
+    memset(paras, 0, sizeof(strParas));
+    Dialog_userDefined diag((void **)&paras);
+    diag.exec();
+    if(0 == paras->raw || 0 == paras->column)
+    {
+        cout << "error: [user-defined]cannot get paras!" << endl;
+        return ;
+    }
+
+    //pUserDefined = new Dialog_userDefined();
+    /*
+    pDesignWindow = new DesignWindow();
+    pDesignWindow->show();
+    this->setVisible(false);
+    connect(pDesignWindow,SIGNAL(close_signals()),this,SLOT(show()));
+    */
+}
+
 void mode_choice::Set_modeButton_visible(bool flag)
 {
     modeButton_normal->setVisible(flag);
@@ -90,6 +111,7 @@ void mode_choice::Init_modeWindow()
     connect(this->modeButton_Exit,SIGNAL(clicked()),this,SLOT(on_modeButton_Exit_clicked()));
     connect(this->modeButton_designed,SIGNAL(clicked()),this,SLOT(on_modeButton_Designed_clicked()));
     connect(this->designedButton_Return,SIGNAL(clicked()),this,SLOT(on_designedButton_Return_clicked()));
+    connect(this->designedButton_New,SIGNAL(clicked()),this,SLOT(on_designedButton_New_clicked()));
 
     this->Set_modeButton_visible(true);
     this->Set_designedButton_visible(false);

@@ -5,6 +5,9 @@
 #include "mainwindow.h"
 #include <QCloseEvent>
 #include <QPushButton>
+#include "designwindow.h"
+#include "dialog_userdefined.h"
+#include "mine.h"
 
 namespace Ui {
 class mode_choice;
@@ -27,6 +30,8 @@ private slots:
 
     void on_designedButton_Return_clicked();
 
+    void on_designedButton_New_clicked();
+
 private:
     Ui::mode_choice *ui;
     MainWindow *pNormalWindow;
@@ -37,6 +42,9 @@ private:
     QPushButton *designedButton_New;
     QPushButton *designedButton_Load;
     QPushButton *designedButton_Return;
+
+    DesignWindow *pDesignWindow;
+    Dialog_userDefined *pUserDefined;
 
     void Set_modeButton_visible(bool flag);
     void Set_designedButton_visible(bool flag);

@@ -10,6 +10,15 @@ class Mine
 public:
     Mine();
 
+    /* 函数：MallocMemForMap
+     * 功能：为二维指针申请内存
+     * Input:int raw, 行数
+     *       int column, 列数
+     *       int mineNum, 雷数
+     * Output：bool ret，返回是否成功申请内存
+     * */
+    bool MallocMemForMap(int in_raw, int in_column, int in_mineNum);
+
     /* 函数：GenerateMap
      * 功能：根据传入参数，生成二维数组地图
      * Input:int raw, 行数
@@ -35,14 +44,7 @@ private:
     int column;//列数
     int mineNum;//雷数
 
-    /* 函数：MallocMemForMap
-     * 功能：为二维指针申请内存
-     * Input:int raw, 行数
-     *       int column, 列数
-     *       int mineNum, 雷数
-     * Output：bool ret，返回是否成功申请内存
-     * */
-    bool MallocMemForMap(int in_raw, int in_column, int in_mineNum);
+
 
     /* 函数：InitMap
      * 功能：在地图中埋雷，为每个方格填值
