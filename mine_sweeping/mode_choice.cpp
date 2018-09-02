@@ -44,6 +44,12 @@ void mode_choice::on_modeButton_Designed_clicked()
     this->Set_designedButton_visible(true);
 }
 
+void mode_choice::on_modeButton_Online_pressed()
+{
+    this->Set_modeButton_visible(false);
+    this->Set_onlineButton_visible(true);
+}
+
 void mode_choice::on_designedButton_Return_clicked()
 {
     this->Set_modeButton_visible(true);
@@ -71,10 +77,29 @@ void mode_choice::on_designedButton_New_clicked()
     */
 }
 
+void mode_choice::on_onlineButton_Return_clicked()
+{
+    this->Set_modeButton_visible(true);
+    this->Set_onlineButton_visible(false);
+}
+
+void mode_choice::on_onlineButton_Server_clicked()
+{
+    this->tcp_hq = new socket_hq(SOCKET_TYPE_SERVER);
+    tcp_hq->show();
+}
+
+void mode_choice::on_onlineButton_Client_clicked()
+{
+    this->tcp_hq = new socket_hq(SOCKET_TYPE_CLIENT);
+    tcp_hq->show();
+}
+
 void mode_choice::Set_modeButton_visible(bool flag)
 {
     modeButton_normal->setVisible(flag);
     modeButton_designed->setVisible(flag);
+    modeButton_Online->setVisible(flag);
     modeButton_Exit->setVisible(flag);
 }
 
@@ -85,16 +110,26 @@ void mode_choice::Set_designedButton_visible(bool flag)
     designedButton_Return->setVisible(flag);
 }
 
+void mode_choice::Set_onlineButton_visible(bool flag)
+{
+    onlineButton_Server->setVisible(flag);
+    onlineButton_Client->setVisible(flag);
+    onlineButton_Return->setVisible(flag);
+}
+
 void mode_choice::Init_modeWindow()
 {
     this->modeButton_normal = new QPushButton("Normal");
     this->modeButton_designed = new QPushButton("Designed");
+    this->modeButton_Online = new QPushButton("Online");
     this->modeButton_Exit = new QPushButton("Exit");
     modeButton_normal->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
     modeButton_designed->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
+    modeButton_Online->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
     modeButton_Exit->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
     ui->verticalLayout->addWidget(modeButton_normal);
     ui->verticalLayout->addWidget(modeButton_designed);
+    ui->verticalLayout->addWidget(modeButton_Online);
     ui->verticalLayout->addWidget(modeButton_Exit);
 
     this->designedButton_New = new QPushButton("New");
@@ -107,14 +142,30 @@ void mode_choice::Init_modeWindow()
     ui->verticalLayout->addWidget(designedButton_Load);
     ui->verticalLayout->addWidget(designedButton_Return);
 
+    this->onlineButton_Server = new QPushButton("Server");
+    this->onlineButton_Client = new QPushButton("Clinet");
+    this->onlineButton_Return = new QPushButton("Return");
+    onlineButton_Server->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
+    onlineButton_Client->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
+    onlineButton_Return->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
+    ui->verticalLayout->addWidget(onlineButton_Server);
+    ui->verticalLayout->addWidget(onlineButton_Client);
+    ui->verticalLayout->addWidget(onlineButton_Return);
+
     connect(this->modeButton_normal,SIGNAL(clicked()),this,SLOT(on_modeButton_Normal_pressed()));
     connect(this->modeButton_Exit,SIGNAL(clicked()),this,SLOT(on_modeButton_Exit_clicked()));
     connect(this->modeButton_designed,SIGNAL(clicked()),this,SLOT(on_modeButton_Designed_clicked()));
+    connect(this->modeButton_Online,SIGNAL(clicked()),this,SLOT(on_modeButton_Online_pressed()));
     connect(this->designedButton_Return,SIGNAL(clicked()),this,SLOT(on_designedButton_Return_clicked()));
     connect(this->designedButton_New,SIGNAL(clicked()),this,SLOT(on_designedButton_New_clicked()));
+    connect(this->onlineButton_Server,SIGNAL(clicked()),this,SLOT(on_onlineButton_Server_clicked()));
+    connect(this->onlineButton_Client,SIGNAL(clicked()),this,SLOT(on_onlineButton_Client_clicked()));
+    connect(this->onlineButton_Return,SIGNAL(clicked()),this,SLOT(on_onlineButton_Return_clicked()));
+
 
     this->Set_modeButton_visible(true);
     this->Set_designedButton_visible(false);
+    this->Set_onlineButton_visible(false);
 }
 
 

@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,18 +29,21 @@ SOURCES += main.cpp\
     mine.cpp \
     dialog_userdefined.cpp \
     mode_choice.cpp \
-    designwindow.cpp
+    designwindow.cpp \
+    socket_hq.cpp
 
 HEADERS  += mainwindow.h \
     mine.h \
     dialog_userdefined.h \
     mode_choice.h \
-    designwindow.h
+    designwindow.h \
+    socket_hq.h
 
 FORMS    += mainwindow.ui \
     dialog_userdefined.ui \
     mode_choice.ui \
-    designwindow.ui
+    designwindow.ui \
+    socket_hq.ui
 
 DISTFILES += \
     ../src/block.bmp \
