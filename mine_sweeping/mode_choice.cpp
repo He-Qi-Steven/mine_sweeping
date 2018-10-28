@@ -119,6 +119,8 @@ void mode_choice::Set_onlineButton_visible(bool flag)
 
 void mode_choice::Init_modeWindow()
 {
+    this->pMainLayout = new QVBoxLayout();
+    setLayout(this->pMainLayout);
     this->modeButton_normal = new QPushButton("Normal");
     this->modeButton_designed = new QPushButton("Designed");
     this->modeButton_Online = new QPushButton("Online");
@@ -127,10 +129,10 @@ void mode_choice::Init_modeWindow()
     modeButton_designed->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
     modeButton_Online->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
     modeButton_Exit->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
-    ui->verticalLayout->addWidget(modeButton_normal);
-    ui->verticalLayout->addWidget(modeButton_designed);
-    ui->verticalLayout->addWidget(modeButton_Online);
-    ui->verticalLayout->addWidget(modeButton_Exit);
+    pMainLayout->addWidget(modeButton_normal);
+    pMainLayout->addWidget(modeButton_designed);
+    pMainLayout->addWidget(modeButton_Online);
+    pMainLayout->addWidget(modeButton_Exit);
 
     this->designedButton_New = new QPushButton("New");
     this->designedButton_Load = new QPushButton("Load");
@@ -138,9 +140,10 @@ void mode_choice::Init_modeWindow()
     designedButton_New->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
     designedButton_Load->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
     designedButton_Return->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
-    ui->verticalLayout->addWidget(designedButton_New);
-    ui->verticalLayout->addWidget(designedButton_Load);
-    ui->verticalLayout->addWidget(designedButton_Return);
+
+    pMainLayout->addWidget(designedButton_New);
+    pMainLayout->addWidget(designedButton_Load);
+    pMainLayout->addWidget(designedButton_Return);
 
     this->onlineButton_Server = new QPushButton("Server");
     this->onlineButton_Client = new QPushButton("Clinet");
@@ -148,9 +151,10 @@ void mode_choice::Init_modeWindow()
     onlineButton_Server->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
     onlineButton_Client->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
     onlineButton_Return->setSizePolicy(QSizePolicy::Policy::Preferred,QSizePolicy::Policy::Preferred);
-    ui->verticalLayout->addWidget(onlineButton_Server);
-    ui->verticalLayout->addWidget(onlineButton_Client);
-    ui->verticalLayout->addWidget(onlineButton_Return);
+
+    pMainLayout->addWidget(onlineButton_Server);
+    pMainLayout->addWidget(onlineButton_Client);
+    pMainLayout->addWidget(onlineButton_Return);
 
     connect(this->modeButton_normal,SIGNAL(clicked()),this,SLOT(on_modeButton_Normal_pressed()));
     connect(this->modeButton_Exit,SIGNAL(clicked()),this,SLOT(on_modeButton_Exit_clicked()));

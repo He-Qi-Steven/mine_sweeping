@@ -9,6 +9,7 @@
 #include "dialog_userdefined.h"
 #include "mine.h"
 #include "socket_hq.h"
+#include <QVBoxLayout>
 
 namespace Ui {
 class mode_choice;
@@ -44,6 +45,8 @@ private slots:
 private:
     Ui::mode_choice *ui;
     MainWindow *pNormalWindow;
+    QVBoxLayout *pMainLayout;
+
     QPushButton *modeButton_normal;
     QPushButton *modeButton_designed;
     QPushButton *modeButton_Online;
