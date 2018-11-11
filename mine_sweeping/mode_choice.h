@@ -8,7 +8,8 @@
 #include "designwindow.h"
 #include "dialog_userdefined.h"
 #include "mine.h"
-#include "socket_hq.h"
+#include "socket_server_hq.h"
+#include "socket_client_hq.h"
 #include <QVBoxLayout>
 
 namespace Ui {
@@ -62,7 +63,8 @@ private:
     QPushButton *onlineButton_Client;
     QPushButton *onlineButton_Return;
 
-    socket_hq *tcp_hq;
+    socket_server_hq *tcp_server_hq;
+    socket_client_hq *tcp_client_hq;
 
     DesignWindow *pDesignWindow;
     Dialog_userDefined *pUserDefined;

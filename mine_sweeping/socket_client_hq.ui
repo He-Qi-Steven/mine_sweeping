@@ -1,19 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>socket_hq</class>
- <widget class="QWidget" name="socket_hq">
+ <author/>
+ <comment/>
+ <exportmacro/>
+ <class>socket_client_hq</class>
+ <widget name="socket_client_hq" class="QWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>185</width>
-    <height>96</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
  </widget>
- <resources/>
+ <pixmapfunction/>
  <connections/>
 </ui>

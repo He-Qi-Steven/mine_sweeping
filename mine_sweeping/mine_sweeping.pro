@@ -30,20 +30,24 @@ SOURCES += main.cpp\
     dialog_userdefined.cpp \
     mode_choice.cpp \
     designwindow.cpp \
-    socket_hq.cpp
+    socket_server_hq.cpp \
+    socket_client_hq.cpp
 
 HEADERS  += mainwindow.h \
     mine.h \
     dialog_userdefined.h \
     mode_choice.h \
     designwindow.h \
-    socket_hq.h
+    socket_server_hq.h \
+    socket_client_hq.h \
+    socket_message_hq.h
 
 FORMS    += mainwindow.ui \
     dialog_userdefined.ui \
     mode_choice.ui \
     designwindow.ui \
-    socket_hq.ui
+    socket_server_hq.ui \
+    socket_client_hq.ui
 
 DISTFILES += \
     ../src/block.bmp \

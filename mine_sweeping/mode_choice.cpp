@@ -17,6 +17,22 @@ mode_choice::mode_choice(QWidget *parent) :
 
 mode_choice::~mode_choice()
 {
+    delete pNormalWindow;
+    delete pMainLayout;
+    delete modeButton_normal;
+    delete modeButton_designed;
+    delete modeButton_Online;
+    delete modeButton_Exit;
+    delete designedButton_New;
+    delete designedButton_Load;
+    delete designedButton_Return;
+    delete onlineButton_Server;
+    delete onlineButton_Client;
+    delete onlineButton_Return;
+    delete tcp_server_hq;
+    delete tcp_client_hq;
+    delete pDesignWindow;
+    delete pUserDefined;
     delete ui;
 }
 
@@ -85,14 +101,14 @@ void mode_choice::on_onlineButton_Return_clicked()
 
 void mode_choice::on_onlineButton_Server_clicked()
 {
-    this->tcp_hq = new socket_hq(SOCKET_TYPE_SERVER);
-    tcp_hq->show();
+    this->tcp_server_hq = new socket_server_hq();
+    tcp_server_hq->show();
 }
 
 void mode_choice::on_onlineButton_Client_clicked()
 {
-    this->tcp_hq = new socket_hq(SOCKET_TYPE_CLIENT);
-    tcp_hq->show();
+    this->tcp_client_hq = new socket_client_hq();
+    tcp_client_hq->show();
 }
 
 void mode_choice::Set_modeButton_visible(bool flag)
